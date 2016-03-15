@@ -1,0 +1,14 @@
+{
+	"id": "{67318D63-A79B-4BF0-88F2-169735AAC3B9}",
+	"name": "GrandingMA300",
+	"type": 3,
+	"vendor": "Granding",
+	"aliases": 
+	[
+            "MA 300"
+	],
+	"parentRequirements": [],
+	"childRequirements": [],
+	"implemented": [],
+	"prefix": "GrandingMA300"
+}
