@@ -49,6 +49,7 @@
                     {                        
                         $Stamp = GetValueInteger($this->GetIDForIdent("ATTLOG"));
                         echo "Stamp=$Stamp\r\nErrorDelay=30\r\nDelay=15\r\nTransInterval=1\r\nTransFlag=1111101100\r\nRealtime=1\r\nEncrypt=0\r\nTimeZoneclock=1\r\nTimeZone=1\r\n";
+                        echo "ATTLOGStamp=$Stamp\r\n";
                     }
                     else
                     if(isset($_GET["table"]))
