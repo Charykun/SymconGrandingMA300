@@ -56,7 +56,10 @@
                         echo "OK\n";
                         if($_GET["table"] == "ATTLOG")
                         {
-                            SetValueInteger($this->GetIDForIdent("ATTLOG"), (int)$_GET["Stamp"] );
+                            if($_GET["Stamp"] > 0)
+                            {
+                                SetValueInteger($this->GetIDForIdent("ATTLOG"), (int)$_GET["Stamp"] );
+                            }
                         }		
                     }
                     else
