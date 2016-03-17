@@ -27,6 +27,8 @@
             //Never delete this line!
             parent::ApplyChanges();   
             
+            $this->RegisterVariableInteger("ATTLOG", "ATTLOG");
+            
             $sid = $this->RegisterScript("Hook", "Hook (iclock)", "<? //Do not delete or modify.\nGrandingMA300_ProcessHookData(".$this->InstanceID.");");
             IPS_SetHidden($sid, true);
             $this->RegisterHook("/hook/iclock", $sid);
@@ -38,6 +40,33 @@
             {
                 echo "This script cannot be used this way.";
 		return;
+            }
+            header("Content-Type: text/plain");
+            switch(basename($_SERVER["REQUEST_URI"], "?" . $_SERVER["QUERY_STRING"]))
+            {
+                case "cdata":
+                    if(isset($_GET["pushver"]))
+                    {                        
+                        $Stamp = GetValueInteger($this->GetIDForIdent("ATTLOG"));
+                        echo "Stamp=$Stamp\r\nErrorDelay=30\r\nDelay=15\r\nTransInterval=1\r\nTransFlag=1111101100\r\nRealtime=1\r\nEncrypt=0\r\nTimeZoneclock=1\r\nTimeZone=1\r\n";
+                    }
+                    else
+                    if(isset($_GET["table"]))
+                    {
+                        echo "OK\n";
+                        if($_GET["table"] == "ATTLOG")
+                        {
+                            SetValueInteger($this->GetIDForIdent("ATTLOG"), (int)$_GET["Stamp"] );
+                        }		
+                    }
+                    else
+                    {                        
+                        echo "OK\n";
+                    }
+                break;
+                default:
+                    echo "OK\n";
+                break;
             }
         }
         
