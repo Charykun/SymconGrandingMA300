@@ -6,11 +6,8 @@
         { "type": "Label", "label": "Followed by the latest operation record timestamp tag of personnel data last uploaded by the equipment." },  
         { "name": "OpStamp", "type": "NumberSpinner", "caption": "OpStamp:" }                  
     ],
-    "status":
+    "actions":
     [
-        { "code": 102, "icon": "active", "caption": "Interface is open" },
-	{ "code": 104, "icon": "inactive", "caption": "Interface is closed" },
-	{ "code": 200, "icon": "error", "caption": "Interface is an error state. Please check message log for more information." },
-        { "code": 201, "icon": "error", "caption": "Invalid IP-Address" }
+        { "type": "Button", "label": "Reboot", "onClick": "GrandingMA300_Reboot($id);" }
     ]
 }

@@ -20,6 +20,7 @@
             
             $this->RegisterPropertyInteger("Stamp", 0);
             $this->RegisterPropertyInteger("OpStamp", 0);  
+            $this->RegisterPropertyString("CMD", "");
         }
 
         /**
@@ -37,6 +38,10 @@
             $this->RegisterHook("/hook/iclock", $sid);
         } 
         
+        /**
+         * GrandingMA300_ProcessHookData
+         * @global string $HTTP_RAW_POST_DATA
+         */
         public function ProcessHookData()
 	{
             global $HTTP_RAW_POST_DATA;
@@ -58,7 +63,7 @@
                     else
                     if(isset($_GET["table"]))
                     {
-                        echo "OK\n";
+                        echo "OK\r\n";
                         if($_GET["table"] == "ATTLOG")
                         {
                             if($_GET["Stamp"] > 0)
@@ -111,20 +116,40 @@
                     }
                     else
                     {                        
-                        echo "OK\n";
+                        echo "OK\r\n";
                     }
                 break;
+                case "getrequest":
+                    if($this->ReadPropertyString("CMD") == "")
+                    {
+                        echo "OK\r\n";
+                    }
+                    else 
+                    {
+                        echo "C:ID1:" . $this->ReadPropertyString("CMD") . "\r\n";
+                        IPS_SetProperty($this->InstanceID, "CMD", "");
+                        IPS_ApplyChanges($this->InstanceID);
+                    }
+                break;    
                 default:
-                    echo "OK\n";
+                    echo "OK\r\n";
                 break;
             }
         }
         
         /**
+         * GrandingMA300_Reboot
+         */
+        public function Reboot() 
+        {
+            IPS_SetProperty($this->InstanceID, "CMD", "REBOOT");
+            IPS_ApplyChanges($this->InstanceID);
+        }
+        
+        /**
          * RegisterHook
-         * @param type $Hook
-         * @param type $TargetID
-         * @return type
+         * @param string $Hook
+         * @param integer $TargetID
          */
         private function RegisterHook($Hook, $TargetID)
 	{
