@@ -17,6 +17,9 @@
         {
             //Never delete this line!
             parent::Create();   
+            
+            $this->RegisterPropertyInteger("Stamp", 0);
+            $this->RegisterPropertyInteger("OpStamp", 0);  
         }
 
         /**
@@ -26,9 +29,7 @@
         {
             //Never delete this line!
             parent::ApplyChanges();   
-            
-            $this->RegisterPropertyInteger("Stamp", 0);
-            $this->RegisterPropertyInteger("OpStamp", 0);           
+                            
             $this->RegisterVariableString("OPLOG", "OPLOG");
             
             $sid = $this->RegisterScript("Hook", "Hook (iclock)", "<? //Do not delete or modify.\nGrandingMA300_ProcessHookData(".$this->InstanceID.");");
