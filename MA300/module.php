@@ -38,6 +38,7 @@
         
         public function ProcessHookData()
 	{
+            global $HTTP_RAW_POST_DATA;
             if($_IPS['SENDER'] == "Execute") 
             {
                 echo "This script cannot be used this way.";
