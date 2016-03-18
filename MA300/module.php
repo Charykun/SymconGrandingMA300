@@ -28,7 +28,8 @@
             parent::ApplyChanges();   
             
             $this->RegisterVariableInteger("ATTLOG", "ATTLOG");
-            $this->RegisterVariableInteger("OPERLOG", "OPERLOG");
+            $this->RegisterVariableInteger("OPERLOG", "OPERLOG");            
+            $this->RegisterVariableString("OPLOG", "OPLOG");
             
             $sid = $this->RegisterScript("Hook", "Hook (iclock)", "<? //Do not delete or modify.\nGrandingMA300_ProcessHookData(".$this->InstanceID.");");
             IPS_SetHidden($sid, true);
@@ -51,7 +52,6 @@
                         $Stamp = GetValueInteger($this->GetIDForIdent("ATTLOG"));
                         $OpStamp = GetValueInteger($this->GetIDForIdent("OPERLOG"));
                         echo "Stamp=$Stamp\r\nOpStamp=$OpStamp\r\nErrorDelay=30\r\nDelay=15\r\nRealtime=1\r\nEncrypt=0\r\nTimeZoneclock=1\r\nTimeZone=1\r\n";
-                        #echo "ATTLOGStamp=$Stamp\r\n";
                     }
                     else
                     if(isset($_GET["table"]))
@@ -62,6 +62,15 @@
                             if($_GET["Stamp"] > 0)
                             {
                                 SetValueInteger($this->GetIDForIdent("ATTLOG"), (int)$_GET["Stamp"]);
+                                $DATA_r = explode("\n", $HTTP_RAW_POST_DATA);
+                                for ($index = 0; $index < count($DATA_r) - 1; $index++) 
+                                {
+                                    $Value_r = explode("\t", $DATA_r[$index]);
+                                    $User = $Value_r[0];
+                                    $Time = strtotime($Value_r[1]);                                   
+                                    $this->RegisterVariableInteger("User_" . $User, "User: " . $User, "~UnixTimestamp");
+                                    SetValueInteger($this->GetIDForIdent("User_" . $User), (int)$Time);
+                                }
                             }
                         }
                         else
@@ -70,6 +79,29 @@
                             if($_GET["OpStamp"] > 0)
                             {
                                 SetValueInteger($this->GetIDForIdent("OPERLOG"), (int)$_GET["OpStamp"]);
+                                $DATA_r = explode("\n", $HTTP_RAW_POST_DATA);
+                                for ($index = 0; $index < count($DATA_r) - 1; $index++) 
+                                {
+                                    $Value_r = explode("\t", $DATA_r[$index]);
+                                    if($Value_r[0] == "OPLOG 3")
+                                    {
+                                        switch ($Value_r[3]) 
+                                        {
+                                            case "58":
+                                                $OPLOG = "ALARM 58: Try Invalid Verification (" . $Value_r[2] . ")";
+                                            break;
+                                            default:
+                                                $OPLOG = "ALARM " . $Value_r[3] . ": (" . $Value_r[2] . ")";
+                                            break;
+                                        }                                        
+                                    }
+                                    else
+                                    {
+                                        $OPLOG = $Value_r;
+                                    }                                    
+                                    $this->Log($OPLOG);
+                                    SetValueString($this->GetIDForIdent("OPLOG"), $OPLOG);
+                                }
                             }
                         }
                     }
