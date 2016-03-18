@@ -28,6 +28,7 @@
             parent::ApplyChanges();   
             
             $this->RegisterVariableInteger("ATTLOG", "ATTLOG");
+            $this->RegisterVariableInteger("OPERLOG", "OPERLOG");
             
             $sid = $this->RegisterScript("Hook", "Hook (iclock)", "<? //Do not delete or modify.\nGrandingMA300_ProcessHookData(".$this->InstanceID.");");
             IPS_SetHidden($sid, true);
@@ -48,8 +49,9 @@
                     if(isset($_GET["pushver"]))
                     {                        
                         $Stamp = GetValueInteger($this->GetIDForIdent("ATTLOG"));
-                        echo "Stamp=$Stamp\r\nErrorDelay=30\r\nDelay=15\r\nRealtime=1\r\nEncrypt=0\r\nTimeZoneclock=1\r\nTimeZone=1\r\n";
-                        echo "ATTLOGStamp=$Stamp\r\n";
+                        $OpStamp = GetValueInteger($this->GetIDForIdent("OPERLOG"));
+                        echo "Stamp=$Stamp\r\nOpStamp=$OpStamp\r\nErrorDelay=30\r\nDelay=15\r\nRealtime=1\r\nEncrypt=0\r\nTimeZoneclock=1\r\nTimeZone=1\r\n";
+                        #echo "ATTLOGStamp=$Stamp\r\n";
                     }
                     else
                     if(isset($_GET["table"]))
@@ -59,9 +61,17 @@
                         {
                             if($_GET["Stamp"] > 0)
                             {
-                                SetValueInteger($this->GetIDForIdent("ATTLOG"), (int)$_GET["Stamp"] );
+                                SetValueInteger($this->GetIDForIdent("ATTLOG"), (int)$_GET["Stamp"]);
                             }
-                        }		
+                        }
+                        else
+                        if($_GET["table"] == "OPERLOG")
+                        {
+                            if($_GET["OpStamp"] > 0)
+                            {
+                                SetValueInteger($this->GetIDForIdent("OPERLOG"), (int)$_GET["OpStamp"]);
+                            }
+                        }
                     }
                     else
                     {                        
