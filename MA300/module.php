@@ -27,8 +27,8 @@
             //Never delete this line!
             parent::ApplyChanges();   
             
-            $this->RegisterVariableInteger("ATTLOG", "ATTLOG");
-            $this->RegisterVariableInteger("OPERLOG", "OPERLOG");            
+            $this->RegisterPropertyInteger("Stamp", 0);
+            $this->RegisterPropertyInteger("OpStamp", 0);           
             $this->RegisterVariableString("OPLOG", "OPLOG");
             
             $sid = $this->RegisterScript("Hook", "Hook (iclock)", "<? //Do not delete or modify.\nGrandingMA300_ProcessHookData(".$this->InstanceID.");");
@@ -50,8 +50,8 @@
                 case "cdata":
                     if(isset($_GET["pushver"]))
                     {                        
-                        $Stamp = GetValueInteger($this->GetIDForIdent("ATTLOG"));
-                        $OpStamp = GetValueInteger($this->GetIDForIdent("OPERLOG"));
+                        $Stamp = $this->ReadPropertyInteger("Stamp");
+                        $OpStamp = $this->ReadPropertyInteger("OpStamp");
                         echo "Stamp=$Stamp\r\nOpStamp=$OpStamp\r\nErrorDelay=30\r\nDelay=15\r\nRealtime=1\r\nEncrypt=0\r\nTimeZoneclock=1\r\nTimeZone=1\r\n";
                     }
                     else
@@ -62,7 +62,8 @@
                         {
                             if($_GET["Stamp"] > 0)
                             {
-                                SetValueInteger($this->GetIDForIdent("ATTLOG"), (int)$_GET["Stamp"]);
+                                IPS_SetProperty($this->InstanceID, "Stamp", (int)$_GET["Stamp"]);
+                                IPS_ApplyChanges($this->InstanceID);
                                 $DATA_r = explode("\n", $HTTP_RAW_POST_DATA);
                                 for ($index = 0; $index < count($DATA_r) - 1; $index++) 
                                 {
@@ -79,7 +80,8 @@
                         {
                             if($_GET["OpStamp"] > 0)
                             {
-                                SetValueInteger($this->GetIDForIdent("OPERLOG"), (int)$_GET["OpStamp"]);
+                                IPS_SetProperty($this->InstanceID, "OpStamp", (int)$_GET["OpStamp"]);
+                                IPS_ApplyChanges($this->InstanceID);
                                 $DATA_r = explode("\n", $HTTP_RAW_POST_DATA);
                                 for ($index = 0; $index < count($DATA_r) - 1; $index++) 
                                 {

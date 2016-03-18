@@ -1,7 +1,10 @@
 {
      "elements":
     [
-        
+        { "name": "Stamp", "type": "NumberSpinner", "caption": "Stamp:" },
+        { "type": "Label", "label": "Followed by the latest record timestamp tag of attendance records last uploaded by the equipment." },
+        { "name": "OpStamp", "type": "NumberSpinner", "caption": "OpStamp:" },
+        { "type": "Label", "label": "Followed by the latest operation record timestamp tag of personnel data last uploaded by the equipment." }            
     ],
     "status":
     [
