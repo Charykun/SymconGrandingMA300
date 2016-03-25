@@ -21,6 +21,7 @@
             $this->RegisterPropertyInteger("Stamp", 0);
             $this->RegisterPropertyInteger("OpStamp", 0);  
             $this->RegisterPropertyString("CMD", "");
+            $this->RegisterTimer("Poller", 3000, "SetValueBoolean(IPS_GetObjectIDByIdent('Status', \$_IPS['TARGET']), false);");   
         }
 
         /**
@@ -31,8 +32,8 @@
             //Never delete this line!
             parent::ApplyChanges();   
                             
-            $this->RegisterVariableString("OPLOG", "OPLOG");
-            
+            $this->RegisterVariableBoolean("Status", "Status", "~Alert", -1);
+            $this->RegisterVariableString("OPLOG", "OPLOG");            
             $sid = $this->RegisterScript("Hook", "Hook (iclock)", "<? //Do not delete or modify.\nGrandingMA300_ProcessHookData(".$this->InstanceID.");");
             IPS_SetHidden($sid, true);
             $this->RegisterHook("/hook/iclock", $sid);
@@ -50,6 +51,8 @@
                 echo "This script cannot be used this way.";
 		return;
             }
+            SetValueBoolean($this->GetIDForIdent("Status"), true);
+            $this->SetTimerInterval("Poller", 3000);
             header("Content-Type: text/plain");
             switch(basename($_SERVER["REQUEST_URI"], "?" . $_SERVER["QUERY_STRING"]))
             {
