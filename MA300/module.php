@@ -31,7 +31,7 @@
             //Never delete this line!
             parent::ApplyChanges();   
             
-            $this->RegisterVariableBoolean("Status", "Status", "~Alert.reversed", -1);
+            $this->RegisterVariableBoolean("Status", "Status", "~Alert.Reversed", -1);
             $this->RegisterTimer("Poller", 45000, "SetValueBoolean(IPS_GetObjectIDByIdent('Status', \$_IPS['TARGET']), false);");                          
             $this->RegisterVariableString("OPLOG", "OPLOG");            
             $sid = $this->RegisterScript("Hook", "Hook (iclock)", "<? //Do not delete or modify.\nGrandingMA300_ProcessHookData(".$this->InstanceID.");");
@@ -52,6 +52,7 @@
 		return;
             }
             SetValueBoolean($this->GetIDForIdent("Status"), true);
+            $this->SetTimerInterval("Poller", 0);
             $this->SetTimerInterval("Poller", 45000);
             header("Content-Type: text/plain");
             switch(basename($_SERVER["REQUEST_URI"], "?" . $_SERVER["QUERY_STRING"]))
