@@ -31,8 +31,7 @@
             //Never delete this line!
             parent::ApplyChanges();   
             
-            $this->RegisterVariableBoolean("Status", "Status", "~Alert.Reversed", -1);
-            $this->RegisterTimer("Poller", 45000, "SetValueBoolean(IPS_GetObjectIDByIdent('Status', \$_IPS['TARGET']), false);");                          
+            $this->RegisterVariableBoolean("Status", "Status", "~Alert.Reversed", -1);                         
             $this->RegisterVariableString("OPLOG", "OPLOG");            
             $sid = $this->RegisterScript("Hook", "Hook (iclock)", "<? //Do not delete or modify.\nGrandingMA300_ProcessHookData(".$this->InstanceID.");");
             IPS_SetHidden($sid, true);
@@ -52,8 +51,20 @@
 		return;
             }
             SetValueBoolean($this->GetIDForIdent("Status"), true);
-            $this->SetTimerInterval("Poller", 0);
-            $this->SetTimerInterval("Poller", 45000);
+            $eid = @IPS_GetObjectIDByIdent("Poller", $this->InstanceID);
+            if($eid === false) { $eid = 0; } else if(IPS_GetEvent($eid)['EventType'] <> 1) { IPS_DeleteEvent($eid); $eid = 0; }
+            if ($eid == 0) 
+            {
+                $eid = IPS_CreateEvent(1);
+                IPS_SetParent($eid, $this->InstanceID);
+                IPS_SetIdent($eid, "Poller");
+                IPS_SetName($eid, "Poller");
+                IPS_SetHidden($eid, true);
+                IPS_SetEventScript($eid, "SetValueBoolean(IPS_GetObjectIDByIdent('Status', \$_IPS['TARGET']), false);");
+            }                    
+            IPS_SetEventCyclicTimeFrom($eid, date("H"), date("i"), date("s"));
+            IPS_SetEventCyclic($eid, 0, 0, 0, 0, 1, 45000);
+            IPS_SetEventActive($eid, true);                        
             header("Content-Type: text/plain");
             switch(basename($_SERVER["REQUEST_URI"], "?" . $_SERVER["QUERY_STRING"]))
             {
