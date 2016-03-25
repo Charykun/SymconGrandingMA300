@@ -63,7 +63,7 @@
                 IPS_SetEventScript($eid, "SetValueBoolean(IPS_GetObjectIDByIdent('Status', \$_IPS['TARGET']), false);");
             }                    
             IPS_SetEventCyclicTimeFrom($eid, date("H"), date("i"), date("s"));
-            IPS_SetEventCyclic($eid, 0, 0, 0, 0, 1, 45000);
+            IPS_SetEventCyclic($eid, 0, 0, 0, 0, 1, 45);
             IPS_SetEventActive($eid, true);                        
             header("Content-Type: text/plain");
             switch(basename($_SERVER["REQUEST_URI"], "?" . $_SERVER["QUERY_STRING"]))
