@@ -20,8 +20,7 @@
             
             $this->RegisterPropertyInteger("Stamp", 0);
             $this->RegisterPropertyInteger("OpStamp", 0);  
-            $this->RegisterPropertyString("CMD", "");
-            $this->RegisterTimer("Poller", 3000, "SetValueBoolean(IPS_GetObjectIDByIdent('Status', \$_IPS['TARGET']), false);");   
+            $this->RegisterPropertyString("CMD", "");              
         }
 
         /**
@@ -31,8 +30,9 @@
         {
             //Never delete this line!
             parent::ApplyChanges();   
-                            
+            
             $this->RegisterVariableBoolean("Status", "Status", "~Alert", -1);
+            $this->RegisterTimer("Poller", 3000, "SetValueBoolean(IPS_GetObjectIDByIdent('Status', \$_IPS['TARGET']), false);");                          
             $this->RegisterVariableString("OPLOG", "OPLOG");            
             $sid = $this->RegisterScript("Hook", "Hook (iclock)", "<? //Do not delete or modify.\nGrandingMA300_ProcessHookData(".$this->InstanceID.");");
             IPS_SetHidden($sid, true);
