@@ -85,7 +85,7 @@
                             {
                                 IPS_SetProperty($this->InstanceID, "Stamp", (int)$_GET["Stamp"]);
                                 IPS_ApplyChanges($this->InstanceID);
-                                $DATA_r = explode("\n", $HTTP_RAW_POST_DATA);
+                                $DATA_r = explode("\n", file_get_contents("php://input"));
                                 for ($index = 0; $index < count($DATA_r) - 1; $index++) 
                                 {
                                     $Value_r = explode("\t", $DATA_r[$index]);
@@ -103,7 +103,7 @@
                             {
                                 IPS_SetProperty($this->InstanceID, "OpStamp", (int)$_GET["OpStamp"]);
                                 IPS_ApplyChanges($this->InstanceID);
-                                $DATA_r = explode("\n", $HTTP_RAW_POST_DATA);
+                                $DATA_r = explode("\n", file_get_contents("php://input"));
                                 for ($index = 0; $index < count($DATA_r) - 1; $index++) 
                                 {
                                     $Value_r = explode("\t", $DATA_r[$index]);
