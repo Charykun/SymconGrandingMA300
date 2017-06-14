@@ -68,8 +68,9 @@
             switch(basename($_SERVER["REQUEST_URI"], "?" . $_SERVER["QUERY_STRING"]))
             {
                 case "cdata":
+		    $this->SendDebug("GET: cdata", print_r($_GET,true), false);		   
                     if(isset($_GET["pushver"]))
-                    {                        
+                    {    	    
                         $Stamp = $this->ReadPropertyInteger("Stamp");
                         $OpStamp = $this->ReadPropertyInteger("OpStamp");
                         echo "Stamp=$Stamp\r\nOpStamp=$OpStamp\r\nErrorDelay=30\r\nDelay=15\r\nRealtime=1\r\nEncrypt=0\r\nTimeZoneclock=1\r\nTimeZone=1\r\n";
@@ -134,6 +135,7 @@
                     }
                 break;
                 case "getrequest":
+		    $this->SendDebug("GET: getrequest", print_r($_GET,true), false); 	    
                     if($this->ReadPropertyString("CMD") == "")
                     {
                         echo "OK\r\n";
