@@ -151,6 +151,7 @@
                     echo "OK\r\n";
                 break;
             }
+	    $this->SendDebug("DATA", file_get_contents("php://input"), false);	
         }
         
         /**
