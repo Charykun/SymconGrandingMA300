@@ -70,10 +70,11 @@
                 case "cdata":
 		    $this->SendDebug("GET: cdata", print_r($_GET,true), false);		   
                     if(isset($_GET["pushver"]))
-                    {    	    
+                    { 
+			$SN = $_GET["SN"];   
                         $Stamp = $this->ReadPropertyInteger("Stamp");
                         $OpStamp = $this->ReadPropertyInteger("OpStamp");
-                        echo "Stamp=$Stamp\r\nOpStamp=$OpStamp\r\nErrorDelay=30\r\nDelay=15\r\nRealtime=1\r\nEncrypt=0\r\nTimeZoneclock=1\r\nTimeZone=1\r\n";
+                        echo "GET OPTION FROM:=$SN\r\nStamp=$Stamp\r\nOpStamp=$OpStamp\r\nErrorDelay=30\r\nDelay=15\r\nRealtime=1\r\nEncrypt=0\r\n";
                     }
                     else
                     if(isset($_GET["table"]))
